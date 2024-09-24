@@ -5,44 +5,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.navclase.data.ContactoVM
-import com.example.navclase.data.Datos
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ScreenB(
-    navController: NavHostController
-) {
-
-    val viewModel: ContactoVM = viewModel()
+fun ScreenB(navController: NavHostController, viewModel: ContactoVM) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                title = {
-                    Text(
-                        "Detalles de Contacto",
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                },
+                title = { Text("Detalles de Contacto") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Regresar"
-                        )
+                        Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Regresar")
                     }
                 }
             )
@@ -51,30 +30,42 @@ fun ScreenB(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding) // Añadir padding interno del Scaffold
+                .padding(innerPadding)
                 .padding(20.dp),
             verticalArrangement = Arrangement.Top
         ) {
+            // Verificación: Mostrar el número de contactos
+            Text(text = "Número de contactos: ${viewModel.contactos.size}")
+
             // Encabezado
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(text = "Nombre", modifier = Modifier.weight(1f))
                 Text(text = "Apellido", modifier = Modifier.weight(1f))
                 Text(text = "Email", modifier = Modifier.weight(1f))
                 Text(text = "Contacto", modifier = Modifier.weight(1f))
             }
 
-            Spacer(modifier = Modifier.height(16.dp)) // Espacio entre la barra y los datos
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Datos ingresados
-            for (contactos in viewModel.contactos) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(text = contactos.nombre, modifier = Modifier.weight(1f))
-                    Text(text = contactos.apellido, modifier = Modifier.weight(1f))
-                    Text(text = contactos.email, modifier = Modifier.weight(1f))
-                    Text(text = contactos.contacto, modifier = Modifier.weight(1f))
+            // Mostrar los datos de los contactos
+            for (contacto in viewModel.contactos) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(text = contacto.nombre, modifier = Modifier.weight(1f))
+                    Text(text = contacto.apellido, modifier = Modifier.weight(1f))
+                    Text(text = contacto.email, modifier = Modifier.weight(1f))
+                    Text(text = contacto.contacto, modifier = Modifier.weight(1f))
                 }
-                Spacer(modifier = Modifier.height(8.dp)) // Espacio entre contactos
+                Spacer(modifier = Modifier.height(8.dp)) // Espacio entre cada contacto
             }
         }
     }
 }
+
+
+
